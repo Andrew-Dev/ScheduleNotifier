@@ -27,23 +27,26 @@ class Notifier {
         this.config.crns.forEach((crn,i) => {
             setTimeout(()=>{
                 console.log("Monitoring CRN " + crn);
-                setInterval(()=>{
-                    const url = 'https://selfservice.mypurdue.purdue.edu/prod/bwckschd.p_disp_detail_sched?term_in=201920&crn_in=' + crn;
-                    console.log('Request to ' + url);
-                    axios.get(url).then(res => {
-                        const $ = cheerio.load(res.data);
-                        cheerioTableparser($);
-                        const table = $('table[summary*=seating]');
-                        const titleObj = $('table[summary*=detailed] > tbody > tr > th');
-                        const title = titleObj.text();
-                        const parsedTable = table.parsetable(true,true,true);
-                        console.log(parsedTable)
-                        console.log(title);
-                        console.log('Total Seats:',parsedTable[2][1], 'Remaining Seats:',parsedTable[3][1]);
-                        this.notify(crn,title,parsedTable[3][1]);
-                    })
-                },this.config.spaceRate*this.config.crns.length)
+                this.request(crn);
+                setInterval(()=>this.request(crn),this.config.spaceRate*this.config.crns.length)
             },i*this.config.spaceRate);
+        })
+    }
+
+    request(crn) {
+        const url = 'https://selfservice.mypurdue.purdue.edu/prod/bwckschd.p_disp_detail_sched?term_in=201920&crn_in=' + crn;
+        console.log('Request to ' + url);
+        axios.get(url).then(res => {
+            const $ = cheerio.load(res.data);
+            cheerioTableparser($);
+            const table = $('table[summary*=seating]');
+            const titleObj = $('table[summary*=detailed] > tbody > tr > th');
+            const title = titleObj.text();
+            const parsedTable = table.parsetable(true,true,true);
+            console.log(parsedTable)
+            console.log(title);
+            console.log('Total Seats:',parsedTable[2][1], 'Remaining Seats:',parsedTable[3][1]);
+            this.notify(crn,title,parsedTable[3][1]);
         })
     }
 
