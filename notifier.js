@@ -6,12 +6,14 @@ const cheerioTableparser = require('cheerio-tableparser')
 
 const secrets = require('./secrets');
 
-const twilioClient = new Twilio(secrets.sid, secrets.authToken);
+let twilioClient = {}
+if(process.argv[2] != '-a')
+    twilioClient = new Twilio(secrets.sid, secrets.authToken);
 
-const notificationTable = {}
+let notificationTable = {}
 
 class Notifier {
-    constructor(config) {
+    constructor(config,audioAlarm) {
         if(fs.existsSync(config)) {
             const rawFileContent = fs.readFileSync(config,'utf8');
             this.config = JSON.parse(rawFileContent);
@@ -51,6 +53,21 @@ class Notifier {
     }
 
     notify(crn,title,remaining) {
+        if(process.argv[2] == '-a' && parseInt(remaining) > 0 && !notificationTable[crn]) {
+            const { exec } = require('child_process');
+            const soundPath = `/usr/share/sounds/purple/login.wav`
+            const msg = `Attention. Attention. Attention. An emergency has been reported. Andrew, wake up! ${title} is now available for registration with ${remaining} seats.`;
+            const cmd = `paplay ${soundPath} && echo "${msg}" | festival --tts`
+            exec(cmd,(err,stdout,stderr) => {
+                if (err) {
+                    return;
+                }
+            
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
+            return;
+        }
         if(parseInt(remaining) > 0 && !notificationTable[crn]) {
             notificationTable[crn] = true;
             twilioClient.messages.create({

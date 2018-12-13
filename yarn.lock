@@ -436,6 +436,11 @@ oauth-sign@~0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
 
+one-time@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/one-time/-/one-time-0.0.4.tgz#f8cdf77884826fe4dff93e3a9cc37b1e4480742e"
+  integrity sha1-+M33eISCb+Tf+T46nMN7HkSAdC4=
+
 parse5@^3.0.1:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-3.0.3.tgz#042f792ffdd36851551cf4e9e066b3874ab45b5c"
@@ -518,6 +523,13 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0:
 safer-buffer@^2.0.2, safer-buffer@^2.1.0, safer-buffer@~2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+
+say@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/say/-/say-0.15.0.tgz#ca0d7b88a06cfc485aaa82287b263c31a0d33e75"
+  integrity sha512-X/vJ/ETDUnU0WZVJ1HA6AHzJJzT0PvFuZyThJ76wkqwsgcgvqJVH3tf+EqHdDBgANdYUEEmqzYo6I31cvT08pQ==
+  dependencies:
+    one-time "0.0.4"
 
 scmp@0.0.3:
   version "0.0.3"
