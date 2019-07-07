@@ -28,13 +28,13 @@ class Notifier {
             setTimeout(()=>{
                 console.log("Monitoring CRN " + crn);
                 this.request(crn);
-                setInterval(()=>this.request(crn),this.config.spaceRate*this.config.crns.length)
+                setInterval(()=>{this.request(crn)},this.config.spaceRate*this.config.crns.length)
             },i*this.config.spaceRate);
         })
     }
 
     request(crn) {
-        const url = 'https://selfservice.mypurdue.purdue.edu/prod/bwckschd.p_disp_detail_sched?term_in=201920&crn_in=' + crn;
+        const url = `https://selfservice.mypurdue.purdue.edu/prod/bwckschd.p_disp_detail_sched?term_in=${this.config.term}&crn_in=${crn}`;
         console.log('Request to ' + url);
         axios.get(url).then(res => {
             const $ = cheerio.load(res.data);
